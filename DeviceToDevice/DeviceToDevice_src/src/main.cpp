@@ -4,14 +4,26 @@
 #include <cuda_runtime.h>
 #include "kernel.h"
 
+#define DATA_SIZE 4096
+#define BLOCK_SIZE 256
+
 int main() {
 
-	int* data;
-	cudaMalloc(&data, sizeof(int) * 64);
+	int *datain, *dataout, *dataout2;
+	cudaMalloc(&datain, sizeof(int) * DATA_SIZE);
+	cudaMalloc(&dataout, sizeof(int) * DATA_SIZE);
+	cudaMalloc(&dataout2, sizeof(int) * DATA_SIZE);
 
-	execute_kernel(data);
+	cudaStream_t stream;
+	cudaStreamCreate(&stream);
 
-    std::cout << "NICE" << std::endl;
+	execute_basic_copy_kernel(datain, dataout, DATA_SIZE, BLOCK_SIZE, stream);
+	execute_copy_kernel(datain, dataout, DATA_SIZE, BLOCK_SIZE, stream);
+	cudaMemcpyAsync(dataout2, datain, DATA_SIZE, cudaMemcpyDeviceToDevice, stream);
+
+	cudaStreamSynchronize(stream);
+
+    std::cout << "Executed!!" << std::endl;
 
 	return 0;
 
