@@ -21,7 +21,7 @@ Each project can be in different status:
 ## CUDALearning projects
 This section enumerates the different projects, with an small description of each project and the status of the project.
 
-### DeviceToDevice memory copies performance (And philosophy of why to do that?) TBD
+### DeviceToDevice memory copies performance (And philosophy of why to do that?)
 Project dedicated to the exploration of the best performance possible, when copying data from GPU pointers to GPU pointers. Also, contains discussion about why and how to avoid using this copies.
 
 ### New CUDA 9 features TBD
