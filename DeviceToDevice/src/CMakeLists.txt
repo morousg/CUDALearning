@@ -11,7 +11,7 @@ set(TARGET_NAME DeviceToDevice)
 #cuda wraper to perform add_executable using nvcc and C++.
 add_executable(${TARGET_NAME} WIN32 ${SRCS})
 
-set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
+set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
 
 #libraries to link the target. We link also with variables LIBS defined in the root CMakeLists.txt file
 target_link_libraries(${TARGET_NAME})
