@@ -30,5 +30,5 @@ This project needs not much description. There are some CUDA samples showing how
 ### Separation of CUDA memory patterns and it's actual operations TBD
 I want to have basic kernels (mainly Map or Transform, Reduce etc...), that have no actual operations defined, but do have an speciffic memory pattern, and the the implementation of this memory pattern is highly optimized. Not only that, but I want to be able to define an arbitrary number of consecutive operations to be performed
 
-### cudaMemset weird behavior in cuda 9.1 Open
+### cudaMemsetAsync weird behavior in cuda 9.1 Open
 I found that cudaMemsetAsynch does not respect the fifo nature of CUDA Streams, and also prevents the overlapping of memory transfers and computation, under certain conditions. I want to explore this issues, and possible kernel implementations that might prove to be faster than cudaMemsetAsynch.
