@@ -1,4 +1,4 @@
-#include "kernel.h"
+#include "./kernel.h"
 #include <math.h>
 
 __global__ void kernel_setAZero(uint* data) {
@@ -6,5 +6,6 @@ __global__ void kernel_setAZero(uint* data) {
 }
 
 void launch_setAZero(uint* data, cudaStream_t stream) {
-    kernel_setAZero <<<1, 1, 0, stream >>>(data);
+    kernel_setAZero <<<1, 1, 0, stream>>>(data);
+    gpuErrchk(cudaGetLastError());
 }
