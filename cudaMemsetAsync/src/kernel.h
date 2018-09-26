@@ -20,4 +20,7 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort =
 
 void launch_setAZero(uint* data, cudaStream_t stream);
 
+template <class T>
+void launch_setNZeros(T* data, int num_elements, cudaStream_t stream);
+
 #endif  // CUDAMEMSETASYNC_CUDAMEMSETASYNC_SRC_SRC_KERNEL_H_
