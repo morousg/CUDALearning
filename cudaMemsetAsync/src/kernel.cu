@@ -13,11 +13,25 @@ __global__ void kernel_setNZeros(T* data, int num_elements) {
         data[GLOBAL_ID] = zero;
 }
 
-__global__ void kernel_steNZeros4(uint* data, int num_4elements) {
-    if (GLOBAL_ID < num_4elements) {
-        uint4* data4 = (uint4*)data;
-        uint4 zeros = { 0u, 0u, 0u, 0u };
-        data4[GLOBAL_ID] = zeros;
+__global__ void kernel_steNZeros4(uint* data, int num_elements, int num_4elems) {
+    if (num_4elems * 4 == num_elements) {
+        if (GLOBAL_ID < num_4elems) {
+            uint4* data4 = (uint4*)data;
+            uint4 zeros = { 0u, 0u, 0u, 0u };
+            data4[GLOBAL_ID] = zeros;
+        }
+    } else {
+        if (GLOBAL_ID < num_4elems-1) {
+            uint4* data4 = (uint4*)data;
+            uint4 zeros = { 0u, 0u, 0u, 0u };
+            data4[GLOBAL_ID] = zeros;
+        } else {
+            int global_id = GLOBAL_ID * 4;
+            while (global_id < num_elements) {
+                data[global_id] = 0u;
+                global_id++;
+            }
+        }
     }
 }
 
@@ -30,26 +44,24 @@ template <class T>
 void launch_setNZeros(T* data, int num_elements, cudaStream_t stream) {
     int blockSize = 0;
     int gridSize = 0;
-    bool four_elem = false;
-    if (num_elements % 4 == 0) {
-        num_elements /= 4;
-        four_elem = true;
-    }
-    if (num_elements <= 512) {
-        blockSize = num_elements;
+    int num_4elems;
+
+    num_4elems = (int)ceilf((float)num_elements/4.f);
+
+    if (num_4elems <= 512) {
+        blockSize = num_4elems;
         gridSize = 1;
     } else {
         blockSize = 512;
-        gridSize = (int)ceilf((float)num_elements / 512.);
+        gridSize = (int)ceilf((float)num_4elems / 512.);
     }
 
-    if (four_elem) {
-        kernel_steNZeros4<< <gridSize, blockSize, 0, stream >> > (data, num_elements);
-        gpuErrchk(cudaGetLastError());
-    } else {
+    kernel_steNZeros4<< <gridSize, blockSize, 0, stream >> > (data, num_elements, num_4elems);
+    gpuErrchk(cudaGetLastError());
+    /*else {
         kernel_setNZeros<T, (T)0> << <gridSize, blockSize, 0, stream >> > (data, num_elements);
         gpuErrchk(cudaGetLastError());
-    }
+    }*/
 }
 
 template
