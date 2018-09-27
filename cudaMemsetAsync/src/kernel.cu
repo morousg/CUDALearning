@@ -1,5 +1,4 @@
 #include "./kernel.h"
-#include <math.h>
 
 #define GLOBAL_ID ((blockIdx.x * blockDim.x) + threadIdx.x)
 

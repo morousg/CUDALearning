@@ -1,6 +1,3 @@
-#include <cuda.h>
-#include <cuda_runtime.h>
-#include <iostream>
 #include <vector>
 #include "./kernel.h"
 
@@ -31,12 +28,12 @@ int main() {
     gpuErrchk(cudaStreamSynchronize(stream));
     gpuErrchk(cudaFree(data));
     // Second batch of tests
-    
+
     std::vector<int> nums_elements = { 1, 32, 133, 512, 141435, 4096*64 };
 
     for (auto i : nums_elements) {
         do_experiment<uint>(i, stream);
-        //do_experiment<char>(i, stream);
+        // do_experiment<char>(i, stream);
     }
 
     std::cout << "Executed!!" << std::endl;
