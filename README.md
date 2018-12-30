@@ -1,9 +1,9 @@
 # CUDALearning
-This GitHub repository is a place to put all my tests/projects, done with the purpose of better understanding CUDA and GPU performance behavior. This project does not intend to introduce people into CUDA, although I might put some materials for teaching CUDA.
+This GitHub repository is a place to put all my tests and small projects, done with the purpose of better understanding CUDA and GPU performance behavior, as well as testing ways of improving productivity with pointers (not std::vector or similar) in a C++ environment. I will use C++ for implementing easy interfaces, to use CUDA optimizations. This project does not intend to introduce people into CUDA, although I might put some materials for teaching CUDA.
 
 Also I want to learn and test new CUDA features, and create implementations of GPU-hater algorithms, that are not necessarily complex, but perform poorly on the GPU, and are available for free usually for CPU.
 
-Why do I make it public? Well, I don't want this knowledge to stay in a drawer. And if anyone happens to look at it, he/she might find mistakes or might be able to give me some references or similar work that I don't know of. Or even, maybe solve the questions directly :-).
+Why do I make it public? Well, I don't want this knowledge to stay in a drawer, it might be useful to someone. And if anyone happens to look at it, he/she might find mistakes or might be able to give me some references of similar work that I don't know of. Or even, maybe solve the questions directly :-).
 
 I will probably use the code in this repo to ask questions in the NVIDIA forums too.
 
