@@ -15,7 +15,6 @@ O operate(int i, I i_data, cpu_binary_operation<I, I2, O> op, operations... ops)
         O temp = op.nv_operator(i_data, op.scalar);
         return operate(i, temp, ops...);
     } else {
-        // we want to have access to I2 in order to ask for the type size for optimizing
         O temp = op.nv_operator(i_data, op.pointer[i]);
         return operate(i, temp, ops...);
     }

@@ -21,18 +21,7 @@ __device__ O operate(I i_data, binary_operation<Operation, I, I2, O> op, operati
 }
 
 template<typename I, typename O, typename... operations>
-__global__ void cuda_transform(I* i_data, O* o_data, operations... ops) {//binary_operation<binary_sum<float>, float> op1, binary_operation<binary_sum<float>, float> op2, binary_operation<binary_sum<float>, float> op3) {
-    /*binary_operation<float> op1 = {scalar, binary_sum<float>, 1};
-    binary_operation<float> op2 = {scalar, binary_sum<float>, 1};
-    binary_operation<float> op3 = {scalar, binary_sum<float>, 1};*/
-
-    /*O temp = i_data[GLOBAL_ID];
-
-    temp = op1.nv_operator(temp,op1.scalar);
-    temp = op2.nv_operator(temp,op2.scalar);
-    temp = op3.nv_operator(temp,op3.scalar);*/
-
-    //o_data[GLOBAL_ID] = temp;
+__global__ void cuda_transform(I* i_data, O* o_data, operations... ops) {
     o_data[GLOBAL_ID] = operate(i_data[GLOBAL_ID], ops...);
 }
 
