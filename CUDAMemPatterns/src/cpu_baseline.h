@@ -2,8 +2,7 @@
 #define CUDAMEMPATTERNS_SRC_CPU_BASELINE_H_
 
 #include <functional>
-
-#define SIZE 128
+#include "utils.h"
 
 template <typename I1, typename I2=I1, typename O=I1>
 O cpu_binary_sum(I1 input_1, I2 input_2) {
@@ -56,8 +55,8 @@ O operate(int i, I i_data, cpu_binary_operation<I, I2, O> op, operations... ops)
 }
 
 template<typename I, typename O, typename... operations>
-void cpu_cuda_transform(I* i_data, O* o_data, operations... ops) {
-    for (int i=0; i<SIZE; ++i) {
+void cpu_cuda_transform(I* i_data, O* o_data, dim3 size, operations... ops) {
+    for (int i=0; i<size.x; ++i) {
         o_data[i] = operate(i, i_data[i], ops...);
     }
 }
