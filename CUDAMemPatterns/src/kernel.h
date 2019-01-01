@@ -4,7 +4,6 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <iostream>
-#include <nvfunctional>
 
 typedef unsigned int uint;
 
@@ -18,21 +17,6 @@ inline void gpuAssert(cudaError_t code,
                 cudaGetErrorString(code), file, line);
         if (abort) exit(code);
     }
-}
-
-template <typename I1, typename I2=I1, typename O=I1>
-O cpu_binary_sum(I1 input_1, I2 input_2) {
-    return input_1 + input_2;
-}
-
-template <typename I1, typename I2=I1, typename O=I1>
-O cpu_binary_mul(I1 input_1, I2 input_2) {
-    return input_1 * input_2;
-}
-
-template <typename I1, typename I2=I1, typename O=I1>
-O cpu_binary_div(I1 input_1, I2 input_2) {
-    return input_1 / input_2;
 }
 
 template <typename I1, typename I2=I1, typename O=I1>
@@ -50,35 +34,25 @@ struct binary_div {
     __device__ O operator()(I1 input_1, I2 input_2) {return input_1 / input_2;}
 };
 
-enum transform_patern {
-    scalar,
-    pointer
+template <typename Operator, typename I1, typename I2, typename O>
+struct _binary_operation_scalar {
+    I2 scalar;
+    Operator nv_operator;
 };
 
-template <typename I1, typename I2, typename O, typename Operator>
-struct gpu_binary_operation {
-    transform_patern parameter;
-    I2 scalar;
+template <typename Operator, typename I1, typename I2=I1, typename O=I1>
+using binary_operation_scalar = typename _binary_operation_scalar<Operator, I1, I2, O>;
+
+template <typename Operator, typename I1, typename I2, typename O>
+struct _binary_operation_pointer {
     I2* pointer;
     Operator nv_operator;
     I2 temp_register[4];
 };
 
-template <typename I1, typename I2, typename O>
-struct _binary_operation {
-    transform_patern parameter;
-    nvstd::function<O(I1,I2)> nv_operator;
-    I2 scalar;
-    I2* pointer;
-    I2 temp_register[4];
-};
-
-template <typename I1, typename I2=I1, typename O=I1>
-using cpu_binary_operation = typename _binary_operation<I1, I2, O>;
-
 template <typename Operator, typename I1, typename I2=I1, typename O=I1>
-using binary_operation = typename gpu_binary_operation<I1, I2, O, Operator>;
+using binary_operation_pointer = typename _binary_operation_pointer<Operator, I1, I2, O>;
 
-void test_mult_sum_div_float(float* data, dim3 data_dims, cudaStream_t stream);
+void test2_mult_sum_div_float(float* data, dim3 data_dims, cudaStream_t stream);
 
 #endif  // CUDAMEMPATTERNS_SRC_KERNEL_H_

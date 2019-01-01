@@ -1,32 +1,6 @@
 #include <vector>
 #include "./kernel.h"
-
-#define SIZE 128
-
-template <typename O>
-O operate(int i, O i_data){
-    return i_data;
-}
-
-template <typename I, typename O, typename I2, typename... operations>
-O operate(int i, I i_data, cpu_binary_operation<I, I2, O> op, operations... ops){
-
-    if (op.parameter == scalar) {
-        O temp = op.nv_operator(i_data, op.scalar);
-        return operate(i, temp, ops...);
-    } else {
-        O temp = op.nv_operator(i_data, op.pointer[i]);
-        return operate(i, temp, ops...);
-    }
-
-}
-
-template<typename I, typename O, typename... operations>
-void cpu_cuda_transform(I* i_data, O* o_data, operations... ops) {
-    for (int i=0; i<SIZE; ++i) {
-        o_data[i] = operate(i, i_data[i], ops...);
-    }
-}
+#include "cpu_baseline.h"
 
 int main() {
 
@@ -45,7 +19,7 @@ int main() {
     gpuErrchk(cudaMemcpyAsync(d_data, data, sizeof(float)*SIZE, cudaMemcpyHostToDevice, stream));
 
     dim3 size(128);
-    test_mult_sum_div_float(d_data, size, stream);
+    test2_mult_sum_div_float(d_data, size, stream);
 
     gpuErrchk(cudaMemcpyAsync(h_data, d_data, sizeof(float)*SIZE, cudaMemcpyDeviceToHost, stream));
     gpuErrchk(cudaStreamSynchronize(stream));
