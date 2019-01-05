@@ -49,13 +49,22 @@ int main() {
         if (success) success = 0.001 > abs(cpu_o_data[i] - h_o_data[i]);
         //std::cout << "cpu_o_data " << cpu_o_data[i] << " == " << h_o_fast_data[i] << " h_o_fast_data " << h_o_data[i] << " h_o_data" << std::endl;
     }
+
     free(data);
+    free(cpu_o_data);
+    free(h_o_fast_data);
+    free(h_o_data);
+
+    gpuErrchk(cudaFree(d_data));
+    gpuErrchk(cudaFree(d_o_data));
 
     if (success) {
         std::cout << "Success!!" << std::endl;
     } else {
         std::cout << "Fail!!" << std::endl;
     }
+
+    gpuErrchk(cudaStreamDestroy(stream));
 
     return 0;
 }

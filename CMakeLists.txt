@@ -21,3 +21,4 @@ set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo" CACHE STRING "" FOR
 add_subdirectory(cudaMemsetAsync)
 add_subdirectory(DeviceToDevice)
 add_subdirectory(CUDAMemPatterns)
+add_subdirectory(cudaConvolutions)
