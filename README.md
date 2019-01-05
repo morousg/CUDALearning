@@ -40,3 +40,5 @@ I want to:
 - To review spatial separable convolution kernels, and see improvements with new CUDA features like global synchronization.
 - To review depth wise separable convolutions, and their implementation as matrix multiplication, and the implications in memory movement. Also compare the performance of different implementations: from non matrix multiplication, to matrix multiplication with fp32, fp16, and tensor cores when I have them available.
 - To also understand how filters in int8 and int4 can be applied and still get acceptable results.
+- Very intresting article by the way: https://towardsdatascience.com/a-basic-introduction-to-separable-convolutions-b99ec3102728
+
