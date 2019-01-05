@@ -37,7 +37,7 @@ I found that cudaMemsetAsynch does not respect the fifo nature of CUDA Streams, 
 
 I want to:
 - Implement convolution kernels, in the traditional way, to apply basic filters to images, as a basic material for teaching basic cuda, and shared memory usage.
-- To review spatial separable convolution kernels, and see improvements with new CUDA features like global synchronization.
+- To review spatial separable convolution kernels, and see improvements with new CUDA features like global synchronization, fp16, etc.
 - To review depth wise separable convolutions, and their implementation as matrix multiplication, and the implications in memory movement. Also compare the performance of different implementations: from non matrix multiplication, to matrix multiplication with fp32, fp16, and tensor cores when I have them available.
 - To also understand how filters in int8 and int4 can be applied and still get acceptable results.
 - Very intresting article by the way: https://towardsdatascience.com/a-basic-introduction-to-separable-convolutions-b99ec3102728
