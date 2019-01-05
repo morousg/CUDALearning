@@ -32,3 +32,11 @@ I want to have basic kernels (mainly Map or Transform, Reduce etc...), that have
 
 ### cudaMemsetAsync weird behavior in cuda 9.1 F
 I found that cudaMemsetAsynch does not respect the fifo nature of CUDA Streams, and also prevents the overlapping of memory transfers and computation, under certain conditions. I want to explore this issues, and possible kernel implementations that might prove to be faster than cudaMemsetAsynch.
+
+### Convolutions and their optimization as matrix multiplication: exploring how to efficiently shape data from RGB images, to the convolutional layer of a DNN.
+
+I want to:
+- Implement convolution kernels, in the traditional way, to apply basic filters to images, as a basic material for teaching basic cuda, and shared memory usage.
+- To review spatial separable convolution kernels, and see improvements with new CUDA features like global synchronization.
+- To review depth wise separable convolutions, and their implementation as matrix multiplication, and the implications in memory movement. Also compare the performance of different implementations: from non matrix multiplication, to matrix multiplication with fp32, fp16, and tensor cores when I have them available.
+- To also understand how filters in int8 and int4 can be applied and still get acceptable results.
