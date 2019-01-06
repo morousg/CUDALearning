@@ -9,6 +9,17 @@ After successfully implementing a cuda transform version, that can apply several
 - Repeate the same experiment, but this time, use a cuda graph for executing the consecutive transform kernels, to see how much cuda graph can optimize kernel execution. Of course, the individual kernels still will read and write device memory several times, therefore I expect my variadic template transform implementation to still be faster.
 - To have a variadic-transform baseline implementation, to compare with possible optimized versions that I will be testing. Also to compare with versions that will be using masks, and ROI's (Regions of Interest).
 
+## Notes/Ideas
+
+For the reduce kernel, we could think of cases where we need to perform several and different reductions on the same source data. A good example of this is when you want to compute the variance of a matrix or a vector. We need to obtain the sumation of all elements, plus the summation of the square of all the kernels, and the total number of elements in the matrix (or the number of elements used, in case we use a mask or ROI).
+
+In this case the operations of the reduction should be split into three parts:
+- The initial operations sum, sum of sqr, and return 2, 1 or 0 according to whether we use both numbers, one or none.
+- The rest of the operations, in this case sumation for all cases.
+- An optional final operation, in case we want (in this case we want, to compute the variance).
+
+How we pass this information to the kernel? We could use an struct, where we have the two first operations, and a number that represents the index of the device memory pointer where we want this result to be written. We could pass an indefinite number of this structs, using variadic templates. Another struct called somthing like "nary_operation", would contain an operator that takes the output vector, and operates on the previously generated results, to generate any number of results storerd on the same output vector.
+
 ## Results
 
 Note: dates in european format DD.MM.YYYY
