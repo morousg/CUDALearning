@@ -24,6 +24,8 @@ Using this strategy, we can do a normal reduction, min, max, compute variance, o
 
 Quite different strategies should be applied to reduce columns or rows, or to reduce blobs defined by several ROI's.
 
+In general, what should one do with scalar values? This values can be generated on Device memory. Therefore they should be passed as a pointer to the next kernel, to avoid latencies. The operation structs, should some how support the usage of an scalar in a gpu pointer. Probably, the easyest is to create another struct, and overloaded corresponding device functions, operating with it.
+
 ## Results
 
 Note: dates in european format DD.MM.YYYY
@@ -33,6 +35,9 @@ Note: dates in european format DD.MM.YYYY
 - The first benchmarks performed with NVIDIA's NSIGHT Visual Sutdio edition, show big speedups. For 5 transform operations, on a 4K sized vector (3840*2160 numbers on a row), with float data type, shows that my implementation is up to 5 times faster.
 - The way of using this code, is quite simpler than writting a single kernel for each case.
 - An initial attempt of kernel optimization, that is still buggy (probably because of vector type data ordering), shows a 2x speedup compared to the previous optimization.
+
+06.01.2019 Achievements:
+- Optimized memory access in transform kernel, improves execution times in about 1,5x for big arrays. So, up to now, the biggest experiment I have done, has changed from 2,750ms to 0,520ms to 0,340ms. Therefore, total speedup is about 8x, for 5 transform operations.
 
 ## Conclussions
 - Having a 5x speedup for 5 operations makes complete sense. The GPU spends most of it's time reading and writing data. It has plenty of time in between for doing a lot of computations, without making the kernel slower. This is thanks to a very early mechanism on GPU's called latency hiding.
