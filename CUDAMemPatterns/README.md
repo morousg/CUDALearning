@@ -18,7 +18,11 @@ In this case the operations of the reduction should be split into three parts:
 - The rest of the operations, in this case sumation for all cases.
 - An optional final operation, in case we want (in this case we want, to compute the variance).
 
-How we pass this information to the kernel? We could use an struct, where we have the two first operations, and a number that represents the index of the device memory pointer where we want this result to be written. We could pass an indefinite number of this structs, using variadic templates. Another struct called something like "nary_operation", would contain an operator that takes the output vector, and operates on the previously generated results, to generate any number of results stored on the same output vector.
+How we pass this information to the kernel? We could use an struct, where we have the two first operations, and a number that represents the index of the device memory pointer where we want this result to be written (we could add a flag to indicate if we operate on the mask or on the source data, a different solution should be implemented when using ROI). We could pass an indefinite number of this structs, using variadic templates. Another struct called something like "nary_operation", would contain an operator that takes the output vector, and operates on the previously generated results, to generate any number of results stored on the same output vector.
+
+Using this strategy, we can do a normal reduction, min, max, compute variance, others, or all of them at the same time, executing the optimized memory pattern, only once.
+
+Quite different strategies should be applied to reduce columns or rows, or to reduce blobs defined by several ROI's.
 
 ## Results
 
