@@ -18,24 +18,6 @@ __device__ O operate(I i_data, binary_operation_pointer<Operation, I, I2, O> op,
     return operate(temp, ops...);
 }
 
-template <typename O>
-__device__ O operate_optimized(int i, O i_data){
-    return i_data;
-}
-
-template <typename I, typename O, typename I2, typename Operation, typename... operations>
-__device__ O operate_optimized(int i, I i_data, binary_operation_scalar<Operation, I, I2, O> op, operations... ops) {
-    O temp = op.nv_operator(i_data, op.scalar);
-    return operate_optimized(i, temp, ops...);
-}
-
-template <typename I, typename O, typename I2, typename Operation, typename... operations>
-__device__ O operate_optimized(int i, I i_data, binary_operation_pointer<Operation, I, I2, O> op, operations... ops) {
-    // we want to have access to I2 in order to ask for the type size for optimizing
-    O temp = op.nv_operator(i_data, op.temp_register[i]);
-    return operate_optimized(i, temp, ops...);
-}
-
 template<typename I, typename O, typename... operations>
 __global__ void cuda_transform(int size, I* i_data, O* o_data, operations... ops) {
     if (GLOBAL_ID < size) o_data[GLOBAL_ID] = operate(i_data[GLOBAL_ID], ops...);
@@ -57,21 +39,39 @@ void test_mult_sum_div_float(float* data, dim3 data_dims, cudaStream_t stream) {
     gpuErrchk(cudaGetLastError());
 }
 
-
 // As a first optimization, let's suppose we are always using 4byte types, and we read 4 of them per thread.
 // Later on we will play with type sizes and so on.
+
+template <typename O>
+__device__ O operate_optimized(int i, O i_data) {
+    return i_data;
+}
+
+template <typename I, typename O, typename I2, typename Operation, typename... operations>
+__device__ O operate_optimized(int i, I i_data, binary_operation_scalar<Operation, I, I2, O> op, operations... ops) {
+    O temp = op.nv_operator(i_data, op.scalar);
+    return operate_optimized(i, temp, ops...);
+}
+
+template <typename I, typename O, typename I2, typename Operation, typename... operations>
+__device__ O operate_optimized(int i, I i_data, binary_operation_pointer<Operation, I, I2, O> op, operations... ops) {
+    // we want to have access to I2 in order to ask for the type size for optimizing
+    O temp = op.nv_operator(i_data, op.temp_register[i]);
+    return operate_optimized(i, temp, ops...);
+}
+
 __device__ void parameter_pointer_read() {}
 
 template <typename I, typename O, typename I2, typename Operation, typename... operations>
-__device__ void parameter_pointer_read(binary_operation_pointer<Operation, I, I2, O>& op, operations... ops) {
+__device__ void parameter_pointer_read(binary_operation_pointer<Operation, I, I2, O>& op, operations&... ops) {
     uint4* temp = (uint4*)(op.pointer);
     uint4 temp_r = temp[GLOBAL_ID];
 
     I2 temp0, temp1, temp2, temp3;
-    temp0 = ((I2*)(&temp_r))[0];
-    temp1 = ((I2*)(&temp_r))[1];
-    temp2 = ((I2*)(&temp_r))[2];
-    temp3 = ((I2*)(&temp_r))[3];
+    temp0 = *((I2*)(&temp_r.x));
+    temp1 = *((I2*)(&temp_r.y));
+    temp2 = *((I2*)(&temp_r.z));
+    temp3 = *((I2*)(&temp_r.w));
 
     op.temp_register[0] = temp0;
     op.temp_register[1] = temp1;
@@ -80,7 +80,7 @@ __device__ void parameter_pointer_read(binary_operation_pointer<Operation, I, I2
 }
 
 template <typename I, typename O, typename I2, typename Operation, typename... operations>
-__device__ void parameter_pointer_read(binary_operation_scalar<Operation, I, I2, O>& op, operations... ops) {
+__device__ void parameter_pointer_read(binary_operation_scalar<Operation, I, I2, O>& op, operations&... ops) {
     parameter_pointer_read(ops...);
 }
 

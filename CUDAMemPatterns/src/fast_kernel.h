@@ -4,7 +4,7 @@
 #include "utils.h"
 
 template <typename Operator, typename I1, typename I2, typename O>
-struct _binary_operation_scalar {
+struct MY_ALIGN(16) _binary_operation_scalar {
     I2 scalar;
     Operator nv_operator;
 };
@@ -13,7 +13,7 @@ template <typename Operator, typename I1, typename I2=I1, typename O=I1>
 using binary_operation_scalar = typename _binary_operation_scalar<Operator, I1, I2, O>;
 
 template <typename Operator, typename I1, typename I2, typename O>
-struct _binary_operation_pointer {
+struct MY_ALIGN(16) _binary_operation_pointer {
     I2* pointer;
     Operator nv_operator;
     I2 temp_register[4];

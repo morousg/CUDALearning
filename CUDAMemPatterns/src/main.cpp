@@ -26,8 +26,10 @@ int main() {
 
     dim3 size(SIZE);
     test_mult_sum_div_float_standard(d_data, d_o_data, size, stream);
-    test_mult_sum_div_float(d_data, size, stream);
-    //test_cuda_transform_optimized(d_data, size, stream);
+    // Faster for small arrays
+    //test_mult_sum_div_float(d_data, size, stream);
+    // Faster for big arrays
+    test_cuda_transform_optimized(d_data, size, stream);
 
     gpuErrchk(cudaMemcpyAsync(h_o_fast_data, d_data, sizeof(float)*SIZE, cudaMemcpyDeviceToHost, stream));
     gpuErrchk(cudaMemcpyAsync(h_o_data, d_o_data, sizeof(float)*SIZE, cudaMemcpyDeviceToHost, stream));
