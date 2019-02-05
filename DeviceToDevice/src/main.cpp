@@ -4,8 +4,8 @@
 #include <cuda_runtime.h>
 #include "kernel.h"
 
-#define DATA_SIZE 4096
-#define BLOCK_SIZE 256
+#define DATA_SIZE 3840*2160
+#define BLOCK_SIZE 512
 
 int main() {
 
