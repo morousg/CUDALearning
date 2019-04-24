@@ -7,7 +7,7 @@ Why do I make it public? Well, I don't want this knowledge to stay in a drawer, 
 
 I will probably use the code in this repo to ask questions in the NVIDIA forums too.
 
-Why not to sign-up in a CUDA course instead? Well, I've started learning CUDA when Compute Capabilites where not even 2.0. Also, OpenCL was not abailable for testing, but I had the specification to learn it. Later I did some courses, and I think that none can answer the questions I want to currently solve. So I preffer to test and share to the community, so if I can't find an answer, hopefully if someone is looking at the same things might be able to help. Of course, what I put here might also be usefull for others. That is why I'm using Unlicense, because I want this code to be used by any one, without restrictions.
+Why not to sign-up in a CUDA course instead? Well, I did some courses, and I think that none can answer the questions I want to currently solve. So I preffer to test and share to the community. I'm using Unlicense, because I want this code to be used by any one, without restrictions.
 
 The organization of the repository is very simple. A set of folders, where each folder contains a project that serves a purpose.
 
