@@ -49,3 +49,16 @@ Looking at CUDA toolkit documentation: "Global memory resides in device memory a
 So 128-byte is the same as 32 elements of 32 bits each, or 4 bytes. But why is it faster reading 128bit elements? Is due to the cache?
 
 Doing some tests and looking into assembler code may give some answers.
+
+# Quite relevant finding:
+In NVIDIA official documentation (https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#implicit-synchronization), you can find the following:
+Two commands from different streams cannot run concurrently if any one of the following operations is issued in-between them by the host thread:
+
+- a page-locked host memory allocation,
+- a device memory allocation,
+- a device memory set,
+- a memory copy between two addresses to the same device memory,
+any CUDA command to the NULL stream,
+- a switch between the L1/shared memory configurations described in Compute Capability 3.x and Compute Capability 7.x.
+
+This means that both memory set and DeviceToDevice memory copies may prevent some overlapping, making even more interesting to use your own kernels, instead of the official implementations.
