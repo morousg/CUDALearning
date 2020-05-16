@@ -44,9 +44,6 @@ Additionally, I have been replacing copies by handling pointers or modifying ker
 This kernel that did the writing, was not reading and writing 32 bit elements, but 128bit elements (uint4). The kernel is memory bound, and using uint4 data elements instead of uint gave some speed-up. This makes me wonder about the total possible memory bandwith per warp. Also, if you look to other memory bound kernel optimizations, like Reduction kernel, reducing the total amount of threadblocks concurrently active, improves the performance. This obviously ensures a better locality, since you won't have the first thread block and the last thread block asking for very distant data at the same time, in the same SM (just recall an Streaming Multiprocessor can have several thread blocks executing at the same time, and they may be processing further or closer data positions).
 
 But how is Device memory organiced? In blocks of 32 elements of 32 bits? or 64 elements?
-Looking at CUDA toolkit documentation: "Global memory resides in device memory and device memory is accessed via 32-, 64-, or 128-byte memory transactions. These memory transactions must be naturally aligned: Only the 32-, 64-, or 128-byte segments of device memory that are aligned to their size (i.e., whose first address is a multiple of their size) can be read or written by memory transactions."
-
-So 128-byte is the same as 32 elements of 32 bits each, or 4 bytes. But why is it faster reading 128bit elements? Is due to the cache?
 
 Doing some tests and looking into assembler code may give some answers.
 
