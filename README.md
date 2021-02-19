@@ -24,7 +24,7 @@ This section enumerates the different projects, with an small description of eac
 ### DeviceToDevice memory copies performance (And philosophy of why to do that?) IP
 Project dedicated to the exploration of the best performance possible, when copying data from GPU pointers to GPU pointers. Also, contains discussion about why and how to avoid using this copies.
 
-### New CUDA 9 and 10 features TBD
+### New CUDA 9, 10 and 11 features TBD
 This project needs not much description. There are some CUDA samples showing how to use the new features in CUDA 9, that I will check. Also, there is one kernel I would like to implement, with the help of global synchronization, which is the efficient summation of uniquely labelled blobs in an image. This has a lot to do with the Reduction algorithm. There are many alternatives for this. The blobs can be values representing blob IDs in an image, or you can use (x,y) coordinates to define bounding boxes arround this blobs, and perform reduction on this area. In the second case, the values can be either just flags 0 or 1, or more interesting values like probabilities, where you may want to do something more than just counting the number of pixels >0. I will describe all the options, and try to implement all of them, ideally with a single kernel, using cuda 9 features and templates. There might be other kernels that might be interesting to implement 
 
 ### Separation of CUDA memory patterns and it's actual operations IP
