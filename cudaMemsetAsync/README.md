@@ -4,3 +4,5 @@ I found that cudaMemsetAsynch does not respect the fifo nature of CUDA Streams, 
 The first version of the code, already reproduces the problem. It is observable with NSIGHT Visual Studio. Despite the kernel was enqueued first, the cudaMemsetAsync is executing first.
 
 I may use this code, with some extra politeness (cuda error checks and so on), to file a bug to NVIDIA.
+
+UPDATE: actually in the CUDA documentation it says tat cudaMemset can avoy soverlaping between tasts in different cuda streams
