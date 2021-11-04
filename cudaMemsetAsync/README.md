@@ -5,4 +5,4 @@ The first version of the code, already reproduces the problem. It is observable 
 
 I may use this code, with some extra politeness (cuda error checks and so on), to file a bug to NVIDIA.
 
-UPDATE: actually in the CUDA documentation it says tat cudaMemset can avoy soverlaping between tasts in different cuda streams
+UPDATE: actually in the CUDA documentation it says tat cudaMemset can avoyd overlaping between tasks in different cuda streams
