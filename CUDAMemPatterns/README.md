@@ -77,5 +77,3 @@ Initially, I'm going to focus on 8bit color resolution (8 bits per pixel compone
 I want to start with kernels that move from YUV to RGBA, for source images in YUV-420, YUV-422 and YUV-444.
 
 This already has a lot of variability, since additionally to the three formats of YUV, which define the amount of bytes per pixel, and the way to encode the information, each format can be stored in different ways. Generally, planar, semi-planar (or biplanar) and packed.
-
-
