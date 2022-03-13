@@ -66,4 +66,16 @@ Quite different strategies should be applied to reduce columns or rows, or to re
 
 In general, what should one do with scalar values? This values can be generated on Device memory. Therefore they should be passed as a pointer to the next kernel, to avoid latencies. The operation structs, should some how support the usage of an scalar in a gpu pointer. Probably, the easyest is to create another struct, and overloaded corresponding device functions, operating with it.
 
-# Color space converion
+# Color space conversion:
+
+Most video cameras and video encoders and decoders work with YUV color space representation. Instead, Image Processing and Computer Vision algorithms (including Deep Learning) work with RGB (or BGR and other variants) color space representation.
+
+Most of the time, YUV images use less bytes per pixel than RGB. But there are different versions of the YUV color space, and different color resolutions.
+
+Initially, I'm going to focus on 8bit color resolution (8 bits per pixel component).
+
+I want to start with kernels that move from YUV to RGBA, for source images in YUV-420, YUV-422 and YUV-444.
+
+This already has a lot of variability, since additionally to the three formats of YUV, which define the amount of bytes per pixel, and the way to encode the information, each format can be stored in different ways. Generally, planar, semi-planar (or biplanar) and packed.
+
+
