@@ -20,7 +20,7 @@ The memory patterns I want to work on are:
 2. Reduction opertaions. I want a single kernel capable of applying an optimized reduction memory pattern over a matrix, with or without a mask, and be able to apply more than one reduction operation at the same time, including to the mask. That would allow to do the following operations: min, max, sum of all elements, variance or standard deviation, find the value closest to an specific criteria, count the occurrences of a value, etc...
 3. Color space transformation. This is a very simple operation, and the optimization is very similar for many cases. Plus, besides implementing a single memory partern that could serve many color space transformations, this kind of kernel is very easy to fuse with other kernels, specially when the output of the transformation is based on Red, Green and Blue, since most of the image based algorithms work in this color spaces.
 
-# Map or Transform pattern:
+## Map or Transform pattern:
 
 The implementation of this memory pattern is highly optimized. The actual operations are passed as a template parameter, or as a functor, or using C++ trics and Variadic templates. Specifically, with variadic templates, I want to be able to define an arbitrary number of consecutive operations to be performed on the data, so that memory reads and writes on device memory are reduced to the minimum.
 
@@ -30,7 +30,7 @@ After successfully implementing a cuda transform version, that can apply several
 - Repeate the same experiment, but this time, use a cuda graph for executing the consecutive transform kernels, to see how much cuda graph can optimize kernel execution. Of course, the individual kernels still will read and write device memory several times, therefore I expect my variadic template transform implementation to still be faster.
 - To have a variadic-transform baseline implementation, to compare with possible optimized versions that I will be testing. Also to compare with versions that will be using masks, and ROI's (Regions of Interest).
 
-## Results
+### Results
 
 Note: dates in european format DD.MM.YYYY
 
@@ -47,9 +47,9 @@ Note: dates in european format DD.MM.YYYY
 - Having a 5x speedup for 5 operations makes complete sense. The GPU spends most of it's time reading and writing data. It has plenty of time in between for doing a lot of computations, without making the kernel slower. This is thanks to a very early mechanism on GPU's called latency hiding.
 - The conceptual separation of memory patterns and actual operations, makes it more productive to make optimizations on this kernel. Optimizing this single kernel, equates to potentially optimizing hudreds of kernels written without C++ variadic template types. Optimizing the way in which the data is accessed, in the case of transform at least, has nothing to do with the operations being done, and time spent on optimizing this kernel, will benefit all your current and future uses. Also, it makes faster to migrate the code to newer syntaxes of the language like with CUDA 9 and 10.
 
-# Reduce pattern:
+## Reduce pattern:
 
-## Notes/Ideas
+### Notes/Ideas
 
 For the reduce kernel, we could think of cases where we need to perform several and different reductions on the same source data. A good example of this is when you want to compute the variance of a matrix or a vector. We need to obtain the sumation of all elements, plus the summation of the square of all the kernels, and the total number of elements in the matrix (or the number of elements used, in case we use a mask or ROI).
 
@@ -66,7 +66,7 @@ Quite different strategies should be applied to reduce columns or rows, or to re
 
 In general, what should one do with scalar values? This values can be generated on Device memory. Therefore they should be passed as a pointer to the next kernel, to avoid latencies. The operation structs, should some how support the usage of an scalar in a gpu pointer. Probably, the easyest is to create another struct, and overloaded corresponding device functions, operating with it.
 
-# Color space conversion:
+## Color space conversion:
 
 Most video cameras and video encoders and decoders work with YUV color space representation. Instead, Image Processing and Computer Vision algorithms (including Deep Learning) work with RGB (or BGR and other variants) color space representation.
 
