@@ -1,6 +1,6 @@
 # CUDAMemPatterns IP
 
-Most of the kernels I have been working with are memory bound. That means that the number of operations is low compared to the number of memory accesses, by the nature of the algorithm.
+Most of the kernels I have been working with are memory bound. That means that the number of operations is low compared to the number of memory accesses, due to the nature of the algorithm.
 
 This can happen because the number of operations is vey low, or because the memory accesses are very sparse, and generate a lot of memory access instructions.
 
