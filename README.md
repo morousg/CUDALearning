@@ -27,6 +27,8 @@ Project dedicated to the exploration of the best performance possible, when copy
 ### Separation of CUDA memory patterns and it's actual operations IP
 I want to have basic kernels (mainly Map or Transform, Reduce etc...), that have no actual operations defined, but do have an speciffic memory pattern, and the implementation of this memory pattern is highly optimized. The actual operations are passed as a template parameter, or as a functor, or using C++ trics and Variadic templates. Specifically, with variadic templates, I want to be able to define an arbitrary number of consecutive operations to be performed on the data, so that memory reads and writes on device memory are reduced to the minimum.
 
+NOTE: This small exploratory project has lead to a separated GitHub repository https://github.com/morousg/cvGPUSpeedup 
+
 ### cudaMemsetAsync weird behavior in cuda 9.1 F
 I found that cudaMemsetAsynch does not respect the fifo nature of CUDA Streams, and also prevents the overlapping of memory transfers and computation, under certain conditions. I want to explore this issues, and possible kernel implementations that might prove to be faster than cudaMemsetAsynch.
 
